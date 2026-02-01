@@ -22,9 +22,7 @@ pipeline {
 			steps { 
 				sh ''' 
 					sam build 
-					sam deploy --config-env staging --debug
-					--no-confirm-changeset
-					--no-fail-on-empty-changeset 
+					sam deploy --config-env staging --debug --no-confirm-changeset --no-fail-on-empty-changeset 
 				''' 
 			} 
 		} 
