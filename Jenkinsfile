@@ -6,7 +6,7 @@ pipeline {
 	stages { 
 		stage('Get Code') { 
 			steps { 
-				git branch: 'develop', url: 'https://github.com/josuandiamunoz/ToDos.git'
+				git branch: 'develop', url: 'https://github.com/josuandiamunoz/ToDosJosu.git'
 			} 
 		} 
 		stage('Static tests') { 
