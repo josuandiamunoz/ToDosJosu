@@ -74,6 +74,7 @@ pipeline {
 		stage('Promote') { 
 			steps { 
 				sh ''' 
+					git config merge.ours.driver true
 					git checkout master 
 					git merge origin/develop 
 					git push origin master 
