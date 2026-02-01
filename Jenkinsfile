@@ -33,7 +33,7 @@ pipeline {
 				sh ''' 
 					set -e # cualquier fallo detiene el script y marca el stage como failed
 					BASE_URL="https://dan0vt5gxf.execute-api.us-east-1.amazonaws.com/Stage" 
-					echo "➡️ Creating TODO" CREATE_RESPONSE=$(curl -s -f -X POST "$BASE_URL/todos" \ -H "Content-Type: application/json" \ -d '{"text":"Learn Serverless Test"}')
+					echo "➡️ Creating TODO" CREATE_RESPONSE=$(curl -s -f -X POST "$BASE_URL/todos" -H "Content-Type: application/json" -d '{"text":"Learn Serverless Test"}')
 					echo "Response: $CREATE_RESPONSE" TODO_ID=$(echo "$CREATE_RESPONSE" | jq -r '.body | fromjson | .id') 
 					if [ -z "$TODO_ID" ] || [ "$TODO_ID" = "null" ]; then echo "❌ No ID returned from POST" exit 1 fi echo "✅ Created TODO with id: $TODO_ID" 
 					
@@ -44,7 +44,7 @@ pipeline {
 					curl -s -f "$BASE_URL/todos/$TODO_ID" > /dev/null 
 					
 					echo "✅ Get OK" echo "➡️ Updating TODO"
-					curl -s -f -X PUT "$BASE_URL/todos/$TODO_ID" \ -H "Content-Type: application/json" \ -d '{"text":"Learn python and more","checked":true}'
+					curl -s -f -X PUT "$BASE_URL/todos/$TODO_ID" -H "Content-Type: application/json" -d '{"text":"Learn python and more","checked":true}'
 
 					echo "✅ Update OK" echo "➡️ Deleting TODO"
 					curl -s -f -X DELETE "$BASE_URL/todos/$TODO_ID"
