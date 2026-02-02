@@ -73,12 +73,23 @@ pipeline {
 		
 		stage('Promote') { 
 			steps { 
-				sh ''' 
-					git config merge.ours.driver true
-					git checkout master 
-					git merge origin/develop 
-					git push origin master 
-				''' 
+				withCredentials([usernamePassword(
+					credentialsId: 'PAT_Jenkins_AWS',
+					usernameVariable: 'GIT_USER',
+					passwordVariable: 'GIT_TOKEN'
+				)]) {
+					sh '''
+						git config user.email "jenkins@test.com"
+						git config user.name "Jenkins"
+						git config merge.ours.driver true
+						
+						git fetch origin
+						git checkout master 
+						git merge origin/develop 
+						
+						git push https://$GIT_USER:$GIT_TOKEN@github.com/josuandiamunoz/ToDosJosu.git master
+					'''
+				}
 			}
 		} 
 	}
