@@ -37,7 +37,6 @@ pipeline {
 							set -e  # cualquier fallo detiene el script y marca el stage como failed				
 
 
-							echo "➡️ Creating TODO"
 							CREATE_RESPONSE=$(curl -s -f -X POST "$BASE_URL/todos" \
 							  -H "Content-Type: application/json" \
 							  -d '{"text":"Learn Serverless Test"}')
@@ -49,23 +48,19 @@ pipeline {
 							  exit 1
 							fi
 
-							echo "➡️ Listing TODOs"
 							CREATE_RESPONSE=$(curl -s -f "$BASE_URL/todos" > /dev/null)
-							echo "✅ List OK"
+							echo "$CREATE_RESPONSE"
 
-							echo "➡️ Getting TODO by ID"
 							CREATE_RESPONSE=$(curl -s -f "$BASE_URL/todos/$TODO_ID" > /dev/null)
-							echo "✅ Get OK"
+							echo "$CREATE_RESPONSE"
 
-							echo "➡️ Updating TODO"
 							CREATE_RESPONSE=$(curl -s -f -X PUT "$BASE_URL/todos/$TODO_ID" \
 							  -H "Content-Type: application/json" \
 							  -d '{"text":"Learn python and more","checked":true}')
-							echo "✅ Update OK"
+						    echo "$CREATE_RESPONSE"
 
-							echo "➡️ Deleting TODO"
 							CREATE_RESPONSE=$(curl -s -f -X DELETE "$BASE_URL/todos/$TODO_ID")
-							echo "✅ Delete OK"
+							echo "$CREATE_RESPONSE"
 
 						'''
 					}
