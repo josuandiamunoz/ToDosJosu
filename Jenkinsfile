@@ -40,6 +40,7 @@ pipeline {
 							CREATE_RESPONSE=$(curl -s -f -X POST "$BASE_URL/todos" \
 							  -H "Content-Type: application/json" \
 							  -d '{"text":"Learn Serverless Test"}')
+							  echo
 
 							TODO_ID=$(echo "$CREATE_RESPONSE" | jq -r '.body | fromjson | .id')
 
@@ -48,15 +49,19 @@ pipeline {
 							  exit 1
 							fi
 
-							curl -s -f "$BASE_URL/todos"		
+							curl -s -f "$BASE_URL/todos"	
+							echo
 
 							curl -s -f "$BASE_URL/todos/$TODO_ID"
+							echo
 
 							curl -s -f -X PUT "$BASE_URL/todos/$TODO_ID" \
 							  -H "Content-Type: application/json" \
 							  -d '{"text":"Learn python and more","checked":true}'
+							  echo
 
 							curl -s -f -X DELETE "$BASE_URL/todos/$TODO_ID"
+							echo
 
 						'''
 					}
