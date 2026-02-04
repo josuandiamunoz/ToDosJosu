@@ -48,19 +48,15 @@ pipeline {
 							  exit 1
 							fi
 
-							CREATE_RESPONSE=$(curl -s -f "$BASE_URL/todos" > /dev/null)
-							echo "$CREATE_RESPONSE"
+							curl -s -f "$BASE_URL/todos"		
 
-							CREATE_RESPONSE=$(curl -s -f "$BASE_URL/todos/$TODO_ID" > /dev/null)
-							echo "$CREATE_RESPONSE"
+							curl -s -f "$BASE_URL/todos/$TODO_ID"
 
-							CREATE_RESPONSE=$(curl -s -f -X PUT "$BASE_URL/todos/$TODO_ID" \
+							curl -s -f -X PUT "$BASE_URL/todos/$TODO_ID" \
 							  -H "Content-Type: application/json" \
-							  -d '{"text":"Learn python and more","checked":true}')
-						    echo "$CREATE_RESPONSE"
+							  -d '{"text":"Learn python and more","checked":true}'
 
-							CREATE_RESPONSE=$(curl -s -f -X DELETE "$BASE_URL/todos/$TODO_ID")
-							echo "$CREATE_RESPONSE"
+							curl -s -f -X DELETE "$BASE_URL/todos/$TODO_ID"
 
 						'''
 					}
