@@ -42,33 +42,29 @@ pipeline {
 							  -H "Content-Type: application/json" \
 							  -d '{"text":"Learn Serverless Test"}')
 
-							echo "Response: $CREATE_RESPONSE"
-
 							TODO_ID=$(echo "$CREATE_RESPONSE" | jq -r '.body | fromjson | .id')
 
 							if [ -z "$TODO_ID" ] || [ "$TODO_ID" = "null" ]; then
 							  echo "❌ No ID returned from POST"
 							  exit 1
 							fi
-							
-							echo "✅ Created TODO with id: $TODO_ID"
 
 							echo "➡️ Listing TODOs"
-							curl -s -f "$BASE_URL/todos" > /dev/null
+							CREATE_RESPONSE=$(curl -s -f "$BASE_URL/todos" > /dev/null)
 							echo "✅ List OK"
 
 							echo "➡️ Getting TODO by ID"
-							curl -s -f "$BASE_URL/todos/$TODO_ID" > /dev/null
+							CREATE_RESPONSE=$(curl -s -f "$BASE_URL/todos/$TODO_ID" > /dev/null)
 							echo "✅ Get OK"
 
 							echo "➡️ Updating TODO"
-							curl -s -f -X PUT "$BASE_URL/todos/$TODO_ID" \
+							CREATE_RESPONSE=$(curl -s -f -X PUT "$BASE_URL/todos/$TODO_ID" \
 							  -H "Content-Type: application/json" \
-							  -d '{"text":"Learn python and more","checked":true}'
+							  -d '{"text":"Learn python and more","checked":true}')
 							echo "✅ Update OK"
 
 							echo "➡️ Deleting TODO"
-							curl -s -f -X DELETE "$BASE_URL/todos/$TODO_ID"
+							CREATE_RESPONSE=$(curl -s -f -X DELETE "$BASE_URL/todos/$TODO_ID")
 							echo "✅ Delete OK"
 
 						'''
