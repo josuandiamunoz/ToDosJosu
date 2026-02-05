@@ -32,7 +32,7 @@ pipeline {
 							if [ -z "$first_todo_id" ] || [ "$first_todo_id" == "null" ]; then
 								echo "⚠️ No TODOs found"
 							else
-								curl -s -f "$BASE_URL/todos/$first_todo_id" > /dev/null
+								curl -s -f "$BASE_URL/todos/$first_todo_id"
 								echo
 							fi
 
