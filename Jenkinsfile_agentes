@@ -29,8 +29,8 @@ pipeline {
 			} 
 		} 
 		stage('Rest Test') {
+			agent {label 'agent2'}
 			steps {
-				agent {label 'agent2'}
 				sh 'whoami'
 				sh 'hostname'
 				echo WORKSPACE
