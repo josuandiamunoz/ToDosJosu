@@ -7,8 +7,8 @@ pipeline {
 		stage('Get Code') {
 			agent {label 'agent3'}		
 			steps { 
-				bat 'whoami'
-				bat 'hostname'
+				sh 'whoami'
+				sh 'hostname'
 				echo WORKSPACE
 				echo "NODE_NAME = ${env.NODE_NAME}"
 				git branch: 'develop', url: 'https://github.com/josuandiamunoz/ToDosJosu.git'
@@ -18,8 +18,8 @@ pipeline {
 		stage('Static tests') { 
 			agent {label 'agent1'}	
 			steps { 
-				bat 'whoami'
-				bat 'hostname'
+				sh 'whoami'
+				sh 'hostname'
 				echo WORKSPACE
 				echo "NODE_NAME = ${env.NODE_NAME}"
 				unstash name:'code'
@@ -33,8 +33,8 @@ pipeline {
 		stage('Deploy') { 
 			agent {label 'agent3'}		
 			steps { 
-				bat 'whoami'
-				bat 'hostname'
+				sh 'whoami'
+				sh 'hostname'
 				echo WORKSPACE
 				echo "NODE_NAME = ${env.NODE_NAME}"
 				sh ''' 
@@ -46,8 +46,8 @@ pipeline {
 		stage('Rest Test') {
 			agent {label 'agent2'}	
 			steps {
-				bat 'whoami'
-				bat 'hostname'
+				sh 'whoami'
+				sh 'hostname'
 				echo WORKSPACE
 				echo "NODE_NAME = ${env.NODE_NAME}"
 				script {
@@ -94,8 +94,8 @@ pipeline {
 		stage('Promote') { 
 			agent {label 'agent3'}		
 			steps { 
-				bat 'whoami'
-				bat 'hostname'
+				sh 'whoami'
+				sh 'hostname'
 				echo WORKSPACE
 				echo "NODE_NAME = ${env.NODE_NAME}"
 				withCredentials([usernamePassword(
