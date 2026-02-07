@@ -1,0 +1,59 @@
+pipeline { 
+
+	agent none
+	options { skipDefaultCheckout() } 
+	
+	stages { 
+		stage('Get Code') { 
+			agent {label 'agent1'}
+			steps { 
+				bat 'whoami'
+				bat 'hostname'
+				echo WORKSPACE
+				echo "NODE_NAME = ${env.NODE_NAME}"
+				git branch: 'master', url: 'https://github.com/josuandiamunoz/ToDosJosu.git'
+			} 
+		} 
+		
+		stage('Deploy') { 
+			agent {label 'agent1'}
+			steps { 
+				bat 'whoami'
+				bat 'hostname'
+				echo WORKSPACE
+				echo "NODE_NAME = ${env.NODE_NAME}"
+				sh ''' 
+					sam build 
+					sam deploy --config-env production --debug --no-confirm-changeset --no-fail-on-empty-changeset 
+				''' 
+			} 
+		} 
+		stage('Rest Test') {
+			steps {
+				agent {label 'agent2'}
+				bat 'whoami'
+				bat 'hostname'
+				echo WORKSPACE
+				echo "NODE_NAME = ${env.NODE_NAME}"
+				script {
+					def BASE_URL = sh( script: "aws cloudformation describe-stacks --stack-name todo-list-aws-production --query 'Stacks[0].Outputs[?OutputKey==`BaseUrlApi`].OutputValue' --region us-east-1 --output text",
+						returnStdout: true).trim()
+					withEnv(["BASE_URL=${BASE_URL}"]) {
+						sh '''
+							set -e  # cualquier fallo detiene el script y marca el stage como failed				
+							todos_json=$(curl -s -f "$BASE_URL/todos")
+							echo "$todos_json"
+							first_todo_id=$(echo "$todos_json" | jq -r '.[0].id')
+							echo
+							curl -s -f "$BASE_URL/todos/$first_todo_id"
+							echo
+
+						'''
+					}
+					
+				}
+			}
+		} 
+		
+	}
+}
